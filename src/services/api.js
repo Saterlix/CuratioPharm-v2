@@ -251,7 +251,7 @@ export const authAPI = {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         localStorage.removeItem('isAdmin');
-        window.location.href = '/login';
+        window.location.href = (import.meta.env.BASE_URL || '/') + 'login';
     }
 };
 
