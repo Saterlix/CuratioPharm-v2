@@ -2,7 +2,9 @@ import axios from 'axios';
 import { isBackofficeRole, isDeveloperRole } from '../utils/roles';
 
 // API URL: same domain on Vercel, or localhost in dev
-const API_URL = import.meta.env.VITE_API_BASE_URL || '/api';
+// Default to empty string for relative paths in prod, or specific dev server URL
+const defaultApiUrl = import.meta.env.PROD ? '/api' : 'http://localhost:3006/api';
+const API_URL = import.meta.env.VITE_API_BASE_URL || defaultApiUrl;
 
 const api = axios.create({
     baseURL: API_URL,
@@ -25,9 +27,16 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response && error.response.status === 401) {
+            // Check if we are already on the login page to prevent infinite redirects
+            const isLoginPage = window.location.pathname.startsWith('/login') || window.location.pathname.startsWith('/cp-admin-');
+
             localStorage.removeItem('token');
             localStorage.removeItem('user');
             localStorage.removeItem('isAdmin');
+
+            if (!isLoginPage) {
+                window.location.href = '/login';
+            }
         }
         return Promise.reject(error);
     }
