@@ -13,4 +13,7 @@ export { default as AdminLoginPage } from './AdminLoginPage';
 export { default as ProductCatalogPage } from './ProductCatalogPage';
 export { default as ShoppingCartPage } from './ShoppingCartPage';
 export { default as OrderHistoryPage } from './OrderHistoryPage';
-
+export { default as DevPanelPage } from './DevPanelPage';
+export { default as ChatRegistrationPage } from './ChatRegistrationPage';
+export { default as SupportPanelPage } from './SupportPanelPage';
+export { default as ManagerPanelPage } from './ManagerPanelPage';

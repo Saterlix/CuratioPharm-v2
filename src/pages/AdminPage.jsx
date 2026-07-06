@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 import { adminAPI } from '../services/api';
 import {
     Users,
@@ -29,6 +30,7 @@ import './AdminPage.css';
 
 const AdminPage = () => {
     const { isAuthenticated, isAdmin, user, logout } = useAuth();
+    const { theme } = useTheme();
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(true);
@@ -255,7 +257,7 @@ const AdminPage = () => {
     if (!isAdmin) return null;
 
     return (
-        <>
+        <div data-theme={theme?.name || 'default'}>
             <Navbar />
             <main className="page-content admin-page">
                 {/* Admin Header */}
@@ -643,7 +645,7 @@ const AdminPage = () => {
                     </div>
                 )}
             </main>
-        </>
+        </div>
     );
 };
 

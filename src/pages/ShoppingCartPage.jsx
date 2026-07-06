@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { cartAPI, ordersAPI } from '../services/api';
 import { ShoppingCart, Trash2, Plus, Minus, ArrowLeft, Package, CheckCircle, Loader2 } from 'lucide-react';
 import Navbar from './Navbar';
+import { useToast } from '../context/ToastContext';
+import ConfirmModal from '../components/ConfirmModal';
 import './ShoppingCartPage.css';
 
 const ShoppingCartPage = () => {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, loading: authLoading } = useAuth();
     const navigate = useNavigate();
     
     const [cart, setCart] = useState({ items: [], total: 0, totalItems: 0 });
@@ -17,23 +20,34 @@ const ShoppingCartPage = () => {
     const [notes, setNotes] = useState('');
     const [orderSuccess, setOrderSuccess] = useState(false);
     const [orderNumber, setOrderNumber] = useState('');
+    const { addToast } = useToast();
+    const [confirmState, setConfirmState] = useState({ isOpen: false, title: '', message: '', onConfirm: null, type: 'normal' });
+    
+    const showConfirm = (title, message, onConfirm, type = 'normal') => {
+        setConfirmState({
+            isOpen: true,
+            title,
+            message,
+            onConfirm: () => {
+                setConfirmState(prev => ({ ...prev, isOpen: false }));
+                onConfirm();
+            },
+            type
+        });
+    };
     
     useEffect(() => {
+        if (authLoading) return;
         if (!isAuthenticated) {
             navigate('/login');
             return;
         }
         loadCart();
-    }, [isAuthenticated, navigate]);
+    }, [authLoading, isAuthenticated, navigate]);
     
     const loadCart = async () => {
         try {
-            const response = await fetch('/api/cart', {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            const data = await response.json();
+            const data = await cartAPI.getCart();
             if (data.success) {
                 setCart(data);
             }
@@ -49,18 +63,8 @@ const ShoppingCartPage = () => {
         
         setUpdating(true);
         try {
-            const response = await fetch(`/api/cart/${itemId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify({ quantity: newQuantity })
-            });
-            
-            if (response.ok) {
-                loadCart();
-            }
+            await cartAPI.updateItemQuantity(itemId, newQuantity);
+            loadCart();
         } catch (error) {
             console.error('Error updating quantity:', error);
         } finally {
@@ -68,92 +72,72 @@ const ShoppingCartPage = () => {
         }
     };
     
-    const handleRemoveItem = async (itemId) => {
-        if (!window.confirm('Удалить товар из корзины?')) return;
-        
-        setUpdating(true);
-        try {
-            const response = await fetch(`/api/cart/${itemId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            
-            if (response.ok) {
+    const handleRemoveItem = (itemId) => {
+        showConfirm('Удалить товар', 'Вы действительно хотите удалить этот товар из корзины?', async () => {
+            setUpdating(true);
+            try {
+                await cartAPI.removeItem(itemId);
                 loadCart();
+                addToast('Товар удален из корзины', 'info');
+            } catch (error) {
+                console.error('Error removing item:', error);
+                addToast('Ошибка при удалении товара', 'error');
+            } finally {
+                setUpdating(false);
             }
-        } catch (error) {
-            console.error('Error removing item:', error);
-        } finally {
-            setUpdating(false);
-        }
+        }, 'danger');
     };
     
-    const handleClearCart = async () => {
-        if (!window.confirm('Очистить корзину?')) return;
-        
-        setUpdating(true);
-        try {
-            const response = await fetch('/api/cart', {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            
-            if (response.ok) {
+    const handleClearCart = () => {
+        showConfirm('Очистить корзину', 'Вы действительно хотите удалить все товары из корзины?', async () => {
+            setUpdating(true);
+            try {
+                await cartAPI.clearCart();
                 loadCart();
+                addToast('Корзина очищена', 'info');
+            } catch (error) {
+                console.error('Error clearing cart:', error);
+                addToast('Ошибка при очистке корзины', 'error');
+            } finally {
+                setUpdating(false);
             }
-        } catch (error) {
-            console.error('Error clearing cart:', error);
-        } finally {
-            setUpdating(false);
-        }
+        }, 'danger');
     };
     
     const handleCreateOrder = async () => {
         if (cart.items.length === 0) {
-            alert('Корзина пуста');
+            addToast('Корзина пуста', 'warning');
             return;
         }
         
         if (!deliveryAddress || !contactPhone) {
-            alert('Укажите адрес доставки и контактный телефон');
+            addToast('Укажите адрес доставки и контактный телефон', 'warning');
             return;
         }
         
         setUpdating(true);
         try {
-            const response = await fetch('/api/orders', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify({
-                    deliveryAddress,
-                    contactPhone,
-                    notes
-                })
+            const data = await ordersAPI.createOrder({
+                deliveryAddress,
+                contactPhone,
+                notes
             });
-            
-            const data = await response.json();
             if (data.success) {
                 setOrderSuccess(true);
                 setOrderNumber(data.order.orderNumber);
+                addToast('Заказ успешно оформлен!', 'success');
             } else {
-                alert(data.error || 'Ошибка при оформлении заказа');
+                addToast(data.error || 'Ошибка при оформлении заказа', 'error');
             }
         } catch (error) {
             console.error('Error creating order:', error);
-            alert('Ошибка при оформлении заказа');
+            addToast('Ошибка при оформлении заказа', 'error');
         } finally {
             setUpdating(false);
         }
     };
     
-    if (loading) {
+    if (authLoading || loading) {
         return (
             <>
                 <Navbar />
@@ -225,7 +209,8 @@ const ShoppingCartPage = () => {
                             <div className="cart-content">
                                 <div className="cart-items">
                                     {cart.items.map(item => (
-                                        <div key={item.id} className="cart-item">
+                                        <React.Fragment key={item.id}>
+                                        <div className="cart-item">
                                             <div className="item-image">
                                                 <Package size={40} />
                                             </div>
@@ -248,6 +233,7 @@ const ShoppingCartPage = () => {
                                                     <Plus size={16} />
                                                 </button>
                                             </div>
+                                            
                                             <div className="item-total">
                                                 <strong>{Number(item.total).toLocaleString()} сум</strong>
                                             </div>
@@ -259,6 +245,23 @@ const ShoppingCartPage = () => {
                                                 <Trash2 size={18} />
                                             </button>
                                         </div>
+                                        {item.quantity > (item.stock || 0) && (
+                                            <div className="stock-warning-message" style={{
+                                                backgroundColor: '#fef3c7', 
+                                                color: '#d97706', 
+                                                padding: '8px 12px', 
+                                                borderRadius: '6px', 
+                                                fontSize: '13px', 
+                                                marginBottom: '16px',
+                                                marginTop: '-8px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '8px'
+                                            }}>
+                                                ⚠️ Запрошенное количество превышает остаток. Менеджер подтвердит наличие при обработке.
+                                            </div>
+                                        )}
+                                        </React.Fragment>
                                     ))}
                                     
                                     {cart.items.length > 0 && (
@@ -334,6 +337,15 @@ const ShoppingCartPage = () => {
                     </div>
                 </section>
             </main>
+
+            <ConfirmModal
+                isOpen={confirmState.isOpen}
+                title={confirmState.title}
+                message={confirmState.message}
+                onConfirm={confirmState.onConfirm}
+                onCancel={() => setConfirmState(prev => ({ ...prev, isOpen: false }))}
+                type={confirmState.type}
+            />
         </>
     );
 };

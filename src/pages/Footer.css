@@ -1,6 +1,6 @@
 /* Footer */
 .footer {
-    background: #0f172a;
+    background: #0b1329;
     color: white;
     padding: 80px 0 0;
 }
@@ -19,7 +19,7 @@
 }
 
 .footer-brand h3 span {
-    color: #10b981;
+    color: var(--primary);
 }
 
 .footer-brand p {
@@ -61,7 +61,7 @@
 }
 
 .footer-nav a:hover {
-    color: #10b981;
+    color: var(--primary);
 }
 
 .footer-contact p {
@@ -96,6 +96,10 @@
     color: rgba(255, 255, 255, 0.8);
 }
 
+.footer-toggle-btn {
+    display: none;
+}
+
 @media (max-width: 1024px) {
     .footer-grid {
         grid-template-columns: 1fr 1fr;
@@ -105,34 +109,75 @@
 
 @media (max-width: 768px) {
     .footer {
-        padding: 40px 0 0;
+        padding: 24px 0 0;
+    }
+
+    .footer-toggle-btn.mobile-only-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.8);
+        padding: 8px 16px;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        margin: 8px auto 12px;
+        transition: all 0.2s ease;
+        outline: none;
+    }
+
+    .footer-toggle-btn.mobile-only-toggle:hover,
+    .footer-toggle-btn.mobile-only-toggle:focus {
+        background: rgba(255, 255, 255, 0.12);
+        color: white;
+        border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .toggle-icon {
+        transition: transform 0.2s ease;
+    }
+
+    .toggle-icon.open {
+        transform: rotate(180deg);
     }
 
     .footer-grid {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 24px;
-        padding-bottom: 24px;
+        grid-template-columns: 1fr 1fr;
+        text-align: left;
+        gap: 20px;
+        padding-bottom: 20px;
+        transition: all 0.3s ease;
     }
 
-    .footer-brand p {
+    .footer-brand {
+        grid-column: span 2;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-brand .footer-desc {
         font-size: 0.85rem;
         margin-bottom: 12px;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+        display: block;
+        line-height: 1.5;
     }
 
     .footer-brand h3 {
         font-size: 1.4rem;
-        margin-bottom: 10px;
+        margin-bottom: 6px;
     }
 
     .footer-badges {
         justify-content: center;
-        gap: 10px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
     }
 
     .badge {
@@ -147,14 +192,34 @@
     }
 
     .footer-nav a {
-        display: inline-block;
-        margin: 0 8px 8px;
+        display: block;
+        margin: 0 0 8px 0;
         font-size: 0.85rem;
+    }
+
+    .footer-contact {
+        grid-column: span 2;
+        text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        padding-top: 16px;
     }
 
     .footer-contact p {
         font-size: 0.85rem;
         margin-bottom: 6px;
+    }
+
+    /* COLLAPSED STATE ON MOBILE: Hide elements under footer-grid when collapsed */
+    .footer-grid.collapsed {
+        gap: 10px;
+        padding-bottom: 12px;
+    }
+
+    .footer-grid.collapsed .footer-brand .footer-desc,
+    .footer-grid.collapsed .footer-brand .footer-badges,
+    .footer-grid.collapsed .footer-nav,
+    .footer-grid.collapsed .footer-contact {
+        display: none !important;
     }
 
     .footer-bottom {
@@ -182,59 +247,59 @@
 
 @media (max-width: 480px) {
     .footer {
-        padding: 40px 0 0;
+        padding: 24px 0 0;
     }
 
     .footer-grid {
-        gap: 30px;
-        padding-bottom: 30px;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        padding-bottom: 16px;
     }
 
     .footer-brand h3 {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
     }
 
     .footer-brand p {
-        font-size: 0.9rem;
-        margin-bottom: 16px;
+        font-size: 0.8rem;
+        margin-bottom: 10px;
     }
 
     .footer-badges {
-        flex-direction: column;
+        flex-direction: row;
         gap: 8px;
     }
 
     .badge {
-        padding: 8px 12px;
-        font-size: 0.8rem;
-        justify-content: center;
+        padding: 6px 10px;
+        font-size: 0.75rem;
     }
 
     .footer-nav h4,
     .footer-contact h4 {
-        font-size: 0.95rem;
-        margin-bottom: 16px;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
     }
 
     .footer-nav a {
-        font-size: 0.9rem;
-        margin-bottom: 10px;
+        font-size: 0.8rem;
+        margin-bottom: 6px;
     }
 
     .footer-contact p {
-        font-size: 0.9rem;
-        margin-bottom: 10px;
+        font-size: 0.8rem;
+        margin-bottom: 4px;
     }
 
     .footer-bottom {
-        padding: 20px 0;
+        padding: 16px 0;
     }
 
     .footer-bottom p {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
     }
 
     .footer-legal a {
-        font-size: 0.85rem;
+        font-size: 0.75rem;
     }
 }

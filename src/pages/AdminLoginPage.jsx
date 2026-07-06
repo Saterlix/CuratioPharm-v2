@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Shield, Lock, Key, LogIn, Loader2 } from 'lucide-react';
+import { getRoleHome } from '../utils/roles';
 import Navbar from './Navbar';
 import './LoginPage.css';
 
@@ -12,15 +13,15 @@ const AdminLoginPage = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const { adminLogin, isAuthenticated, isAdmin } = useAuth();
+    const { adminLogin, isAuthenticated, isAdmin, user } = useAuth();
     const navigate = useNavigate();
 
     // If already admin, redirect to admin panel
     React.useEffect(() => {
         if (isAuthenticated && isAdmin) {
-            navigate('/cp-admin-panel');
+            navigate(getRoleHome(user?.role));
         }
-    }, [isAuthenticated, isAdmin, navigate]);
+    }, [isAuthenticated, isAdmin, navigate, user?.role]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -30,7 +31,7 @@ const AdminLoginPage = () => {
         const result = await adminLogin(login, password, adminKey);
 
         if (result.success) {
-            navigate('/cp-admin-panel');
+            navigate(getRoleHome(result.user?.role));
         } else {
             setError(result.error || 'Доступ запрещён');
         }
@@ -69,7 +70,7 @@ const AdminLoginPage = () => {
                                         type="text"
                                         value={login}
                                         onChange={(e) => setLogin(e.target.value)}
-                                        placeholder="Admincp"
+                                        placeholder="admin"
                                         required
                                         disabled={loading}
                                     />

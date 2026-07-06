@@ -3,20 +3,32 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    padding: 40px 20px;
+    background: radial-gradient(circle at 50% 50%, var(--bg-alt) 0%, var(--bg-main) 100%);
+    padding: 60px 20px;
+    position: relative;
+    overflow: hidden;
 }
 
 .login-container {
     width: 100%;
     max-width: 420px;
+    z-index: 5;
 }
 
 .login-card {
-    background: white;
-    border-radius: 20px;
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-subtle);
+    border-radius: 24px;
     padding: 48px 40px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow);
 }
 
 /* Login Tabs */
@@ -33,23 +45,23 @@
     justify-content: center;
     gap: 8px;
     padding: 14px;
-    border: 2px solid #e2e8f0;
+    border: 2px solid var(--border);
     background: white;
     border-radius: 12px;
     font-size: 0.95rem;
     font-weight: 500;
-    color: #64748b;
+    color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.2s ease;
 }
 
 .login-tab:hover {
-    border-color: #10b981;
-    color: #10b981;
+    border-color: var(--primary);
+    color: var(--primary);
 }
 
 .login-tab.active {
-    background: linear-gradient(135deg, #0f766e 0%, #10b981 100%);
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
     border-color: transparent;
     color: white;
 }
@@ -62,7 +74,7 @@
 .login-icon {
     width: 72px;
     height: 72px;
-    background: linear-gradient(135deg, #0f766e 0%, #10b981 100%);
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -77,12 +89,12 @@
 
 .login-header h1 {
     font-size: 1.75rem;
-    color: #0f172a;
+    color: var(--text-primary);
     margin-bottom: 8px;
 }
 
 .login-header p {
-    color: #64748b;
+    color: var(--text-secondary);
     font-size: 0.95rem;
 }
 
@@ -106,7 +118,7 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    color: #334155;
+    color: var(--text-secondary);
     font-weight: 500;
     margin-bottom: 8px;
     font-size: 0.9rem;
@@ -115,18 +127,19 @@
 .login-field input {
     width: 100%;
     padding: 14px 18px;
-    border: 2px solid #e2e8f0;
+    border: 1.5px solid var(--border);
     border-radius: 12px;
     font-size: 1rem;
-    transition: all 0.2s ease;
-    background: #f8fafc;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--bg-input);
+    color: var(--text-primary);
 }
 
 .login-field input:focus {
     outline: none;
-    border-color: #10b981;
-    background: white;
-    box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+    border-color: var(--primary);
+    background: var(--bg-card);
+    box-shadow: var(--shadow-glow);
 }
 
 .login-button {
@@ -136,7 +149,7 @@
     gap: 10px;
     width: 100%;
     padding: 16px;
-    background: linear-gradient(135deg, #0f766e 0%, #10b981 100%);
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
     color: white;
     border: none;
     border-radius: 12px;
@@ -169,7 +182,7 @@
 .register-success .success-icon {
     width: 64px;
     height: 64px;
-    background: linear-gradient(135deg, #0f766e 0%, #10b981 100%);
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -180,19 +193,19 @@
 }
 
 .register-success h3 {
-    color: #0f172a;
+    color: var(--text-primary);
     font-size: 1.25rem;
     margin-bottom: 12px;
 }
 
 .register-success p {
-    color: #64748b;
+    color: var(--text-secondary);
     line-height: 1.6;
 }
 
 .register-note {
     text-align: center;
-    color: #64748b;
+    color: var(--text-secondary);
     font-size: 0.85rem;
     line-height: 1.6;
 }
@@ -243,20 +256,78 @@
     align-items: center;
     justify-content: center;
     padding: 60px 20px;
-    color: #64748b;
+    color: var(--text-secondary);
 }
 
 .login-loading svg {
-    color: #10b981;
+    color: var(--primary);
     margin-bottom: 16px;
 }
 
 .login-demo-hint {
     text-align: center;
-    color: #94a3b8;
+    color: var(--text-muted);
     font-size: 0.8rem;
     margin-top: 8px;
     padding: 8px;
-    background: #f8fafc;
+    background: var(--bg-alt);
     border-radius: 8px;
+}
+
+/* Password Change Flow Styling */
+.password-change-card {
+    border: 1px solid rgba(16, 185, 129, 0.15);
+    box-shadow: 0 25px 60px rgba(16, 185, 129, 0.1);
+}
+
+.otp-glow {
+    background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+    animation: otpPulse 2s infinite alternate;
+}
+
+.password-change-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.password-change-success .success-icon {
+    color: var(--primary);
+    margin-bottom: 20px;
+    animation: scalePop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.password-change-success h3 {
+    color: var(--text-primary);
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+}
+
+.password-change-success p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+@keyframes otpPulse {
+    0% {
+        box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+    }
+    100% {
+        box-shadow: 0 0 25px rgba(16, 185, 129, 0.6);
+    }
+}
+
+@keyframes scalePop {
+    0% {
+        transform: scale(0.6);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }

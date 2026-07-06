@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { ordersAPI } from '../services/api';
 import { Package, ArrowLeft, Eye, Loader2, Calendar, Package as PackageIcon, DollarSign } from 'lucide-react';
 import Navbar from './Navbar';
 import './OrderHistoryPage.css';
 
 const OrderHistoryPage = () => {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, loading: authLoading } = useAuth();
     const navigate = useNavigate();
     
     const [orders, setOrders] = useState([]);
@@ -15,21 +16,17 @@ const OrderHistoryPage = () => {
     const [loadingDetails, setLoadingDetails] = useState(false);
     
     useEffect(() => {
+        if (authLoading) return;
         if (!isAuthenticated) {
             navigate('/login');
             return;
         }
         loadOrders();
-    }, [isAuthenticated, navigate]);
+    }, [authLoading, isAuthenticated, navigate]);
     
     const loadOrders = async () => {
         try {
-            const response = await fetch('/api/orders', {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            const data = await response.json();
+            const data = await ordersAPI.getOrders();
             if (data.success) {
                 setOrders(data.orders);
             }
@@ -43,12 +40,7 @@ const OrderHistoryPage = () => {
     const handleViewOrder = async (orderId) => {
         setLoadingDetails(true);
         try {
-            const response = await fetch(`/api/orders/${orderId}`, {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                }
-            });
-            const data = await response.json();
+            const data = await ordersAPI.getOrderById(orderId);
             if (data.success) {
                 setSelectedOrder(data.order);
             }
@@ -71,7 +63,7 @@ const OrderHistoryPage = () => {
         return <span className={`status-badge ${statusInfo.className}`}>{statusInfo.label}</span>;
     };
     
-    if (loading) {
+    if (authLoading || loading) {
         return (
             <>
                 <Navbar />

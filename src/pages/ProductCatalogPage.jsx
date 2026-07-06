@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { productsAPI, cartAPI } from '../services/api';
-import { Search, ShoppingCart, Filter, Plus, Minus, Package, Loader2, ArrowLeft } from 'lucide-react';
+import { Search, ShoppingCart, Filter, Plus, Minus, Package, Loader2, ArrowLeft, Pill, FlaskConical, Stethoscope, Leaf } from 'lucide-react';
 import Navbar from './Navbar';
 import './ProductCatalogPage.css';
 
 const ProductCatalogPage = () => {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, loading: authLoading } = useAuth();
     const navigate = useNavigate();
 
     const [products, setProducts] = useState([]);
@@ -19,13 +19,15 @@ const ProductCatalogPage = () => {
     const [addingToCart, setAddingToCart] = useState(null);
 
     useEffect(() => {
-        if (!isAuthenticated) {
-            navigate('/login');
-            return;
+        if (authLoading) return;
+        if (isAuthenticated) {
+            loadProducts();
+            loadCartCount();
+        } else {
+            loadProducts();
+            setLoading(false);
         }
-        loadProducts();
-        loadCartCount();
-    }, [isAuthenticated, navigate]);
+    }, [authLoading, isAuthenticated]);
 
     const loadProducts = async () => {
         try {
@@ -88,7 +90,7 @@ const ProductCatalogPage = () => {
         return matchesSearch && matchesCategory;
     });
 
-    if (loading) {
+    if (authLoading || (isAuthenticated && loading)) {
         return (
             <>
                 <Navbar />
@@ -97,6 +99,88 @@ const ProductCatalogPage = () => {
                         <Loader2 size={48} className="spin" />
                         <p>Загрузка каталога...</p>
                     </div>
+                </main>
+            </>
+        );
+    }
+
+    if (!isAuthenticated) {
+        return (
+            <>
+                <Navbar />
+                <main className="page-content">
+                    <section className="page-header">
+                        <div className="container">
+                            <h1>Продукция</h1>
+                            <p>Широкий ассортимент товаров медицинского назначения</p>
+                        </div>
+                    </section>
+
+                    <section className="section">
+                        <div className="container">
+                            <div className="products-page-grid">
+                                <div className="product-full-card">
+                                    <div className="product-icon"><Pill size={48} /></div>
+                                    <div className="product-content">
+                                        <h3>Лекарственные средства</h3>
+                                        <p>Более 5000 наименований от ведущих отечественных и зарубежных производителей. Рецептурные и безрецептурные препараты всех фармакологических групп.</p>
+                                        <ul>
+                                            <li>Антибиотики и противомикробные</li>
+                                            <li>Сердечно-сосудистые препараты</li>
+                                            <li>Обезболивающие и противовоспалительные</li>
+                                            <li>Витамины и минералы</li>
+                                            <li>Препараты для ЖКТ</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="product-full-card">
+                                    <div className="product-icon"><FlaskConical size={48} /></div>
+                                    <div className="product-content">
+                                        <h3>Медицинская косметика</h3>
+                                        <p>Профессиональная дерматологическая и космецевтическая продукция от ведущих брендов.</p>
+                                        <ul>
+                                            <li>Аптечная косметика</li>
+                                            <li>Дерматологические средства</li>
+                                            <li>Средства по уходу за кожей</li>
+                                            <li>Солнцезащитные средства</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="product-full-card">
+                                    <div className="product-icon"><Stethoscope size={48} /></div>
+                                    <div className="product-content">
+                                        <h3>Медицинские изделия</h3>
+                                        <p>Расходные материалы и медицинское оборудование для клиник и аптек.</p>
+                                        <ul>
+                                            <li>Перевязочные материалы</li>
+                                            <li>Шприцы и системы</li>
+                                            <li>Диагностическое оборудование</li>
+                                            <li>Средства реабилитации</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="product-full-card">
+                                    <div className="product-icon"><Leaf size={48} /></div>
+                                    <div className="product-content">
+                                        <h3>БАДы и витамины</h3>
+                                        <p>Биологически активные добавки и витаминные комплексы для поддержания здоровья.</p>
+                                        <ul>
+                                            <li>Витаминные комплексы</li>
+                                            <li>Минеральные добавки</li>
+                                            <li>Пробиотики и пребиотики</li>
+                                            <li>Спортивное питание</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style={{ textAlign: 'center', marginTop: '40px' }}>
+                                <button className="btn-primary" onClick={() => navigate('/login')}>
+                                    Войдите для просмотра каталога
+                                </button>
+                            </div>
+                        </div>
+                    </section>
                 </main>
             </>
         );

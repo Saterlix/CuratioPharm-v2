@@ -8,6 +8,12 @@
     --primary-light: #34d399;
     --primary-gradient: linear-gradient(135deg, #0f766e 0%, #10b981 100%);
 
+    /* Z-Index Registry */
+    --z-navbar: 1000;
+    --z-chat: 2000;
+    --z-modal: 10000;
+    --z-toast: 20000;
+
     --bg-main: #ffffff;
     --bg-alt: #f8fafc;
     --bg-card: #ffffff;
@@ -20,18 +26,39 @@
 
     --border: #e2e8f0;
     --border-hover: #cbd5e1;
+    --border-subtle: rgba(16, 185, 129, 0.15);
 
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.1);
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.03);
+    --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.08), 0 12px 24px rgba(0, 0, 0, 0.04);
+    --shadow-glow: 0 10px 30px rgba(16, 185, 129, 0.25);
+
+    --transition-smooth: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
     --icon-bg: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
     --icon-color: #10b981;
 
-    --nav-bg-scrolled: rgba(0, 0, 0, 0.85);
-    --nav-text: #ffffff;
-    --nav-link-hover: rgba(255, 255, 255, 0.8);
-    --partners-bg: #0f172a;
+    --nav-bg-scrolled: rgba(255, 255, 255, 0.95);
+    --nav-bg-glass: rgba(255, 255, 255, 0.12);
+    --nav-text: #1e293b;
+    --nav-link-hover: #10b981;
+    --partners-bg: #f8fafc;
+
+    --surface-page: #f6f8fb;
+    --surface-panel: #ffffff;
+    --surface-panel-muted: #f8fafc;
+    --surface-raised: #ffffff;
+    --text-heading: #111827;
+    --accent-soft: rgba(15, 118, 110, 0.1);
+    --accent-soft-border: rgba(15, 118, 110, 0.18);
+    --danger-soft: #fef2f2;
+    --warning-soft: #fffbeb;
+    --success-soft: #ecfdf5;
+    --focus-ring: 0 0 0 3px rgba(15, 118, 110, 0.12);
+    --radius-control: 8px;
+    --radius-panel: 10px;
+    --shadow-panel: 0 16px 40px rgba(15, 23, 42, 0.07);
 }
 
 /* Light Theme - Brighter */
@@ -53,18 +80,39 @@
 
     --border: #d1fae5;
     --border-hover: #a7f3d0;
+    --border-subtle: rgba(16, 185, 129, 0.15);
 
-    --shadow-sm: 0 1px 3px rgba(16, 185, 129, 0.1);
-    --shadow-md: 0 4px 6px -1px rgba(16, 185, 129, 0.1);
-    --shadow-lg: 0 10px 40px rgba(16, 185, 129, 0.15);
+    --shadow-sm: 0 2px 8px rgba(16, 185, 129, 0.04);
+    --shadow-md: 0 12px 32px rgba(16, 185, 129, 0.05), 0 4px 12px rgba(16, 185, 129, 0.03);
+    --shadow-lg: 0 24px 60px rgba(16, 185, 129, 0.08), 0 12px 24px rgba(16, 185, 129, 0.04);
+    --shadow-glow: 0 10px 30px rgba(16, 185, 129, 0.25);
+
+    --transition-smooth: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
     --icon-bg: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
     --icon-color: #10b981;
 
     --nav-bg-scrolled: rgba(255, 255, 255, 0.95);
+    --nav-bg-glass: rgba(255, 255, 255, 0.12);
     --nav-text: #0f172a;
     --nav-link-hover: #10b981;
     --partners-bg: #0f766e;
+
+    --surface-page: #f7faf9;
+    --surface-panel: #ffffff;
+    --surface-panel-muted: #f3faf7;
+    --surface-raised: #ffffff;
+    --text-heading: #10231e;
+    --accent-soft: rgba(15, 118, 110, 0.09);
+    --accent-soft-border: rgba(15, 118, 110, 0.16);
+    --danger-soft: #fef2f2;
+    --warning-soft: #fffbeb;
+    --success-soft: #ecfdf5;
+    --focus-ring: 0 0 0 3px rgba(15, 118, 110, 0.12);
+    --radius-control: 8px;
+    --radius-panel: 10px;
+    --shadow-panel: 0 16px 40px rgba(15, 23, 42, 0.06);
 }
 
 /* Dark Theme */
@@ -86,18 +134,39 @@
 
     --border: #334155;
     --border-hover: #475569;
+    --border-subtle: rgba(16, 185, 129, 0.2);
 
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.6), 0 12px 24px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 10px 30px rgba(16, 185, 129, 0.25);
+
+    --transition-smooth: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
     --icon-bg: linear-gradient(135deg, #064e3b 0%, #065f46 100%);
     --icon-color: #34d399;
 
     --nav-bg-scrolled: rgba(15, 23, 42, 0.95);
+    --nav-bg-glass: rgba(15, 23, 42, 0.4);
     --nav-text: #f1f5f9;
     --nav-link-hover: #34d399;
     --partners-bg: #1e293b;
+
+    --surface-page: #101827;
+    --surface-panel: #172033;
+    --surface-panel-muted: #111827;
+    --surface-raised: #1d293d;
+    --text-heading: #f8fafc;
+    --accent-soft: rgba(16, 185, 129, 0.12);
+    --accent-soft-border: rgba(16, 185, 129, 0.22);
+    --danger-soft: rgba(239, 68, 68, 0.12);
+    --warning-soft: rgba(245, 158, 11, 0.12);
+    --success-soft: rgba(16, 185, 129, 0.12);
+    --focus-ring: 0 0 0 3px rgba(16, 185, 129, 0.16);
+    --radius-control: 8px;
+    --radius-panel: 10px;
+    --shadow-panel: 0 18px 42px rgba(0, 0, 0, 0.24);
 }
 
 /* Ocean Blue Theme */
@@ -119,18 +188,39 @@
 
     --border: #e0f2fe;
     --border-hover: #bae6fd;
+    --border-subtle: rgba(59, 130, 246, 0.15);
 
-    --shadow-sm: 0 1px 2px rgba(59, 130, 246, 0.1);
-    --shadow-md: 0 4px 6px -1px rgba(59, 130, 246, 0.15);
-    --shadow-lg: 0 10px 40px rgba(59, 130, 246, 0.2);
+    --shadow-sm: 0 2px 8px rgba(59, 130, 246, 0.04);
+    --shadow-md: 0 12px 32px rgba(59, 130, 246, 0.05), 0 4px 12px rgba(59, 130, 246, 0.03);
+    --shadow-lg: 0 24px 60px rgba(59, 130, 246, 0.08), 0 12px 24px rgba(59, 130, 246, 0.04);
+    --shadow-glow: 0 10px 30px rgba(59, 130, 246, 0.25);
+
+    --transition-smooth: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
     --icon-bg: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
     --icon-color: #3b82f6;
 
     --nav-bg-scrolled: rgba(30, 58, 138, 0.92);
+    --nav-bg-glass: rgba(30, 58, 138, 0.4);
     --nav-text: #ffffff;
     --nav-link-hover: #93c5fd;
     --partners-bg: #1e3a8a;
+
+    --surface-page: #f6f9fd;
+    --surface-panel: #ffffff;
+    --surface-panel-muted: #f0f6ff;
+    --surface-raised: #ffffff;
+    --text-heading: #102033;
+    --accent-soft: rgba(29, 78, 216, 0.09);
+    --accent-soft-border: rgba(29, 78, 216, 0.17);
+    --danger-soft: #fef2f2;
+    --warning-soft: #fffbeb;
+    --success-soft: #eff6ff;
+    --focus-ring: 0 0 0 3px rgba(29, 78, 216, 0.12);
+    --radius-control: 8px;
+    --radius-panel: 10px;
+    --shadow-panel: 0 16px 40px rgba(15, 23, 42, 0.06);
 }
 
 /* Purple Theme */
@@ -152,22 +242,369 @@
 
     --border: #ede9fe;
     --border-hover: #ddd6fe;
+    --border-subtle: rgba(139, 92, 246, 0.15);
 
-    --shadow-sm: 0 1px 2px rgba(139, 92, 246, 0.1);
-    --shadow-md: 0 4px 6px -1px rgba(139, 92, 246, 0.15);
-    --shadow-lg: 0 10px 40px rgba(139, 92, 246, 0.2);
+    --shadow-sm: 0 2px 8px rgba(139, 92, 246, 0.04);
+    --shadow-md: 0 12px 32px rgba(139, 92, 246, 0.05), 0 4px 12px rgba(139, 92, 246, 0.03);
+    --shadow-lg: 0 24px 60px rgba(139, 92, 246, 0.08), 0 12px 24px rgba(139, 92, 246, 0.04);
+    --shadow-glow: 0 10px 30px rgba(139, 92, 246, 0.25);
+
+    --transition-smooth: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    --transition-fast: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
     --icon-bg: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
     --icon-color: #8b5cf6;
 
     --nav-bg-scrolled: rgba(76, 29, 149, 0.92);
+    --nav-bg-glass: rgba(76, 29, 149, 0.4);
     --nav-text: #ffffff;
     --nav-link-hover: #c4b5fd;
     --partners-bg: #4c1d95;
+
+    --surface-page: #faf8fd;
+    --surface-panel: #ffffff;
+    --surface-panel-muted: #f7f1ff;
+    --surface-raised: #ffffff;
+    --text-heading: #22172f;
+    --accent-soft: rgba(109, 40, 217, 0.09);
+    --accent-soft-border: rgba(109, 40, 217, 0.17);
+    --danger-soft: #fef2f2;
+    --warning-soft: #fffbeb;
+    --success-soft: #f5f3ff;
+    --focus-ring: 0 0 0 3px rgba(109, 40, 217, 0.12);
+    --radius-control: 8px;
+    --radius-panel: 10px;
+    --shadow-panel: 0 16px 40px rgba(15, 23, 42, 0.06);
 }
 
-/* Dark theme body background */
-[data-theme="dark"] body {
+/* Global body background and text color based on active theme variables */
+body {
     background: var(--bg-main);
     color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Professional B2B UI normalization layer */
+.admin-page,
+.cabinet-page,
+.catalog-body,
+.dev-page-wrapper {
+    background: var(--surface-page) !important;
+    color: var(--text-primary) !important;
+}
+
+.admin-header,
+.dev-header,
+.cabinet-header,
+.catalog-header {
+    background: linear-gradient(135deg, var(--text-heading) 0%, color-mix(in srgb, var(--primary-dark) 24%, var(--text-heading)) 100%) !important;
+}
+
+.admin-header::after {
+    opacity: 0.36 !important;
+}
+
+.stat-card,
+.admin-card,
+.admin-chats-layout,
+.users-table,
+.table-container,
+.cabinet-card,
+.summary-widget,
+.settings-modal,
+.modal,
+.modal-content,
+.dev-card,
+.dev-sidebar,
+.empty-state {
+    background: var(--surface-panel) !important;
+    border-color: var(--border) !important;
+    border-radius: var(--radius-panel) !important;
+    box-shadow: var(--shadow-panel) !important;
+    color: var(--text-primary) !important;
+}
+
+.dev-card,
+.dev-sidebar,
+.dev-page-wrapper .modal,
+.dev-page-wrapper .modal-content {
+    background: var(--surface-panel) !important;
+    color: var(--text-primary) !important;
+    backdrop-filter: none !important;
+}
+
+.dev-card h3,
+.dev-title-block h1,
+.comp-name,
+.admin-chats-layout h3,
+.admin-chat-feed h3,
+.modal-header h2,
+.modal-header h3 {
+    color: var(--text-heading) !important;
+}
+
+.admin-email,
+.admin-title p,
+.dev-page-wrapper,
+.system-indicator,
+.dev-nav-btn,
+.dev-system-specs .spec-title,
+.dev-system-specs .spec-meta,
+.comp-person {
+    color: var(--text-secondary) !important;
+}
+
+.admin-role-chip,
+.env-tag,
+.category-tag,
+.orders-badge,
+.pass-badge,
+.role-badge,
+.stock-badge {
+    border-radius: 999px !important;
+    border: 1px solid var(--accent-soft-border) !important;
+    background: var(--accent-soft) !important;
+    color: var(--primary-dark) !important;
+    font-weight: 650 !important;
+}
+
+[data-theme="dark"] .admin-role-chip,
+[data-theme="dark"] .env-tag,
+[data-theme="dark"] .category-tag,
+[data-theme="dark"] .orders-badge,
+[data-theme="dark"] .pass-badge,
+[data-theme="dark"] .role-badge,
+[data-theme="dark"] .stock-badge {
+    color: var(--primary-light) !important;
+}
+
+.admin-tabs,
+.catalog-toolbar,
+.modal-actions,
+.modal-footer {
+    gap: 10px !important;
+}
+
+.admin-tabs button,
+.dev-nav-btn,
+.btn-primary,
+.btn-secondary,
+.btn-create,
+.btn-cancel,
+.create-btn,
+.refresh-btn,
+.cart-button,
+.add-to-cart-btn,
+.checkout-btn,
+.back-button,
+.back-to-cabinet,
+.logout-btn,
+.admin-logout-btn,
+.admin-back-btn,
+.security-btn,
+.save-btn,
+.submit-claim-btn,
+.clear-cart-btn {
+    border-radius: var(--radius-control) !important;
+    min-height: 40px;
+    box-shadow: none !important;
+    transition: background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease, transform 0.16s ease !important;
+}
+
+.btn-primary,
+.btn-create,
+.create-btn,
+.cart-button,
+.add-to-cart-btn,
+.checkout-btn,
+.save-btn,
+.submit-claim-btn {
+    background: var(--primary-dark) !important;
+    color: var(--text-on-primary) !important;
+}
+
+.btn-primary:hover,
+.btn-create:hover,
+.create-btn:hover,
+.cart-button:hover,
+.add-to-cart-btn:hover,
+.checkout-btn:hover,
+.save-btn:hover,
+.submit-claim-btn:hover {
+    background: var(--primary) !important;
+    transform: translateY(-1px) !important;
+}
+
+.btn-secondary,
+.btn-cancel,
+.back-button,
+.back-to-cabinet,
+.admin-back-btn,
+.security-btn,
+.clear-cart-btn {
+    background: var(--surface-panel-muted) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text-primary) !important;
+}
+
+input,
+textarea,
+select,
+.search-box input,
+.search-bar,
+.search-bar input,
+.category-filter,
+.category-filter select,
+.modal-form .form-group input,
+.modal-form .form-group textarea,
+.modal-form .form-group select,
+.compact-select,
+.role-select,
+.dev-filter-input input,
+.dev-event-modal input,
+.dev-event-modal select,
+.dev-event-modal textarea {
+    background: var(--surface-panel-muted) !important;
+    border-color: var(--border) !important;
+    color: var(--text-primary) !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--text-muted) !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+.search-bar:focus-within,
+.category-filter:focus-within {
+    border-color: var(--primary-dark) !important;
+    box-shadow: var(--focus-ring) !important;
+    outline: none !important;
+}
+
+.users-table,
+.catalog-table,
+.modal-table {
+    table-layout: fixed;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+}
+
+.users-table th,
+.users-table td,
+.catalog-table th,
+.catalog-table td,
+.modal-table th,
+.modal-table td {
+    padding: 12px 14px !important;
+    line-height: 1.35;
+    vertical-align: middle !important;
+}
+
+.users-table th,
+.catalog-table th,
+.modal-table th {
+    background: var(--surface-panel-muted) !important;
+    color: var(--text-secondary) !important;
+    font-size: 0.78rem !important;
+    letter-spacing: 0.035em !important;
+}
+
+.catalog-table tbody tr:hover,
+.users-table tbody tr:hover,
+.modal-table tbody tr:hover {
+    background: var(--accent-soft) !important;
+}
+
+.product-name-cell,
+.catalog-table td,
+.users-table td,
+.modal-table td {
+    min-width: 0;
+}
+
+.product-name-cell span,
+.product-name-cell,
+.catalog-table td,
+.users-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.product-name-cell {
+    max-width: 260px;
+}
+
+.product-name-cell > span,
+.catalog-table td:not(.col-action),
+.users-table td:not(:last-child) {
+    white-space: nowrap;
+}
+
+.col-name { width: 28%; min-width: 240px; }
+.col-category { width: 14%; min-width: 140px; }
+.col-manufacturer { width: 18%; min-width: 160px; }
+.col-price { width: 12%; min-width: 120px; }
+.col-stock { width: 10%; min-width: 110px; }
+.col-qty { width: 10%; min-width: 120px; }
+.col-action { width: 140px; min-width: 140px; }
+
+.summary-widget {
+    align-items: flex-start !important;
+}
+
+.widget-debt {
+    border-left: 4px solid #f59e0b !important;
+}
+
+.widget-debt .widget-value {
+    color: #b45309 !important;
+    font-size: 1.28rem !important;
+}
+
+.widget-orders .widget-value,
+.widget-cart .widget-value,
+.stat-value {
+    color: var(--text-heading) !important;
+}
+
+.widget-label,
+.stat-label {
+    color: var(--text-secondary) !important;
+}
+
+.admin-error,
+.admin-success {
+    border-radius: var(--radius-control) !important;
+}
+
+.admin-error {
+    background: var(--danger-soft) !important;
+}
+
+.admin-success {
+    background: var(--success-soft) !important;
+}
+
+@media (max-width: 768px) {
+    .stat-card,
+    .cabinet-card,
+    .summary-widget,
+    .modal,
+    .modal-content,
+    .dev-card {
+        border-radius: 9px !important;
+    }
+
+    .product-name-cell {
+        max-width: none;
+    }
+
+    .catalog-table,
+    .users-table,
+    .modal-table {
+        table-layout: auto;
+    }
 }

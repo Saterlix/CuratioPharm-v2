@@ -35,11 +35,15 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-    const [theme, setTheme] = useState('default');
+    const [theme, setTheme] = useState(() => {
+        const savedTheme = localStorage.getItem('curatio-theme');
+        return themes[savedTheme] ? savedTheme : 'default';
+    });
 
     useEffect(() => {
-        // Apply theme to document
         document.documentElement.setAttribute('data-theme', theme);
+        document.body.setAttribute('data-theme', theme);
+        localStorage.setItem('curatio-theme', theme);
     }, [theme]);
 
     const changeTheme = (newTheme) => {

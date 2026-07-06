@@ -1,10 +1,10 @@
 .page-content {
     min-height: calc(100vh - 80px);
-    background: var(--bg-color);
+    background: var(--bg-main);
 }
 
 .orders-header {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
     color: white;
     padding: 60px 0;
     text-align: center;
@@ -81,7 +81,7 @@
 }
 
 .order-number svg {
-    color: var(--primary-color);
+    color: var(--primary);
 }
 
 .status-badge {
@@ -142,7 +142,7 @@
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    background: var(--primary-color);
+    background: var(--primary);
     color: white;
     border: none;
     border-radius: 6px;
@@ -153,7 +153,7 @@
 }
 
 .view-order-btn:hover {
-    background: var(--secondary-color);
+    background: var(--primary-dark);
 }
 
 .order-details-panel {
@@ -263,7 +263,7 @@
 
 .item-total {
     font-weight: 600;
-    color: var(--primary-color);
+    color: var(--primary);
 }
 
 .order-total-summary {
@@ -295,7 +295,7 @@
 }
 
 .empty-orders svg {
-    color: var(--primary-color);
+    color: var(--primary);
     margin-bottom: 1rem;
 }
 
@@ -306,7 +306,7 @@
 }
 
 .btn-primary {
-    background: var(--primary-color);
+    background: var(--primary);
     color: white;
     border: none;
     border-radius: 8px;
@@ -317,7 +317,7 @@
 }
 
 .btn-primary:hover {
-    background: var(--secondary-color);
+    background: var(--primary-dark);
 }
 
 .loading-container {

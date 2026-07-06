@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { getRoleHome, isBackofficeRole } from '../utils/roles';
 import { useTheme, themes } from '../context/ThemeContext';
+import { useToast } from '../context/ToastContext';
 import { ordersAPI, cartAPI, cabinetAPI } from '../services/api';
 import {
     User,
@@ -34,6 +36,7 @@ import './CabinetPage.css';
 const CabinetPage = () => {
     const { isAuthenticated, user, logout, loading: authLoading } = useAuth();
     const { theme, setTheme } = useTheme();
+    const { addToast } = useToast();
     const navigate = useNavigate();
     const [showSettings, setShowSettings] = useState(false);
     const [activeSettingsTab, setActiveSettingsTab] = useState('profile');
@@ -72,15 +75,7 @@ const CabinetPage = () => {
         }
     }, [user]);
 
-    // Load orders and cart data
-    useEffect(() => {
-        if (isAuthenticated) {
-            loadOrders();
-            loadCart();
-        }
-    }, [isAuthenticated]);
-
-    const loadOrders = async () => {
+    const loadOrders = useCallback(async () => {
         try {
             const data = await ordersAPI.getOrders();
             if (data.success) {
@@ -89,9 +84,9 @@ const CabinetPage = () => {
         } catch (error) {
             console.error('Error loading orders:', error);
         }
-    };
+    }, []);
 
-    const loadCart = async () => {
+    const loadCart = useCallback(async () => {
         try {
             const data = await cartAPI.getCart();
             if (data.success) {
@@ -100,7 +95,52 @@ const CabinetPage = () => {
         } catch (error) {
             console.error('Error loading cart:', error);
         }
-    };
+    }, []);
+
+    const loadDebts = useCallback(async () => {
+        setLoadingData(true);
+        try {
+            const data = await cabinetAPI.getDebts();
+            if (data.success) setDebts(data.debt);
+        } catch (e) { console.error(e); }
+        setLoadingData(false);
+    }, []);
+
+    const loadDocuments = useCallback(async () => {
+        setLoadingData(true);
+        try {
+            const data = await cabinetAPI.getDocuments();
+            if (data.success) setDocuments(data.documents);
+        } catch (e) { console.error(e); }
+        setLoadingData(false);
+    }, []);
+
+    const loadClaims = useCallback(async () => {
+        setLoadingData(true);
+        try {
+            const data = await cabinetAPI.getClaims();
+            if (data.success) setClaims(data.claims);
+        } catch (e) { console.error(e); }
+        setLoadingData(false);
+    }, []);
+
+    const loadCertificates = useCallback(async () => {
+        setLoadingData(true);
+        try {
+            const data = await cabinetAPI.getCertificates();
+            if (data.success) setCertificates(data.certificates);
+        } catch (e) { console.error(e); }
+        setLoadingData(false);
+    }, []);
+
+    // Load orders and cart data
+    useEffect(() => {
+        if (authLoading) return;
+        if (isAuthenticated) {
+            loadOrders();
+            loadCart();
+        }
+    }, [authLoading, isAuthenticated, loadOrders, loadCart]);
 
     // Load data based on active section
     useEffect(() => {
@@ -110,43 +150,7 @@ const CabinetPage = () => {
         else if (activeSection === 'documents') loadDocuments();
         else if (activeSection === 'claims') loadClaims();
         else if (activeSection === 'certificates') loadCertificates();
-    }, [activeSection, isAuthenticated]);
-
-    const loadDebts = async () => {
-        setLoadingData(true);
-        try {
-            const data = await cabinetAPI.getDebts();
-            if (data.success) setDebts(data.debt);
-        } catch (e) { console.error(e); }
-        setLoadingData(false);
-    };
-
-    const loadDocuments = async () => {
-        setLoadingData(true);
-        try {
-            const data = await cabinetAPI.getDocuments();
-            if (data.success) setDocuments(data.documents);
-        } catch (e) { console.error(e); }
-        setLoadingData(false);
-    };
-
-    const loadClaims = async () => {
-        setLoadingData(true);
-        try {
-            const data = await cabinetAPI.getClaims();
-            if (data.success) setClaims(data.claims);
-        } catch (e) { console.error(e); }
-        setLoadingData(false);
-    };
-
-    const loadCertificates = async () => {
-        setLoadingData(true);
-        try {
-            const data = await cabinetAPI.getCertificates();
-            if (data.success) setCertificates(data.certificates);
-        } catch (e) { console.error(e); }
-        setLoadingData(false);
-    };
+    }, [activeSection, isAuthenticated, loadDebts, loadDocuments, loadClaims, loadCertificates]);
 
     const handleCreateClaim = async (e) => {
         e.preventDefault();
@@ -158,20 +162,31 @@ const CabinetPage = () => {
         };
         try {
             await cabinetAPI.createClaim(claimData);
-            alert('Претензия успешно отправлена');
+            addToast('Претензия успешно отправлена', 'success');
             loadClaims(); // reload
             e.target.reset();
         } catch (error) {
-            alert('Ошибка при отправке претензии');
+            addToast('Ошибка при отправке претензии', 'error');
         }
     };
 
-    // Redirect to login if not authenticated
+    // Redirect to login if not authenticated, or to role panel if staff
     React.useEffect(() => {
+        if (authLoading) return;
         if (!isAuthenticated) {
             navigate('/login');
+            return;
         }
-    }, [isAuthenticated, navigate]);
+        // Debug: log what role the user has
+        if (user) {
+            console.log('[CabinetPage] user.role =', user.role, '| isBackoffice =', isBackofficeRole(user.role), '| target =', getRoleHome(user.role));
+        }
+        // Redirect staff members to their role-specific panels
+        if (user && isBackofficeRole(user.role)) {
+            navigate(getRoleHome(user.role), { replace: true });
+        }
+    }, [authLoading, isAuthenticated, navigate, user]);
+
 
     const handleLogout = () => {
         logout();
@@ -335,7 +350,7 @@ const CabinetPage = () => {
                             {cart.items.length === 0 ? (
                                 <div className="empty-state">Корзина пуста</div>
                             ) : (
-                                cart.items.map((item, idx) => (
+                                cart.items.map((item) => (
                                     <div key={item.id} className="modal-list-item">
                                         <div className="item-info">
                                             <h4>{item.productName}</h4>
@@ -466,7 +481,7 @@ const CabinetPage = () => {
                                 </div>
                                 <div className="widget-info">
                                     <span className="widget-label">Заказы</span>
-                                    <span className="widget-value">{orders.length} шт</span>
+                                    <span className="widget-value">{orders ? orders.length : 0} шт</span>
                                 </div>
                                 <BarChart3 size={18} className="widget-arrow" />
                             </div>
@@ -477,7 +492,7 @@ const CabinetPage = () => {
                                 </div>
                                 <div className="widget-info">
                                     <span className="widget-label">Корзина</span>
-                                    <span className="widget-value">{cart.totalItems} позиций</span>
+                                    <span className="widget-value">{cart ? cart.totalItems : 0} позиций</span>
                                 </div>
                                 <ChevronRight size={18} className="widget-arrow" />
                             </div>
@@ -489,7 +504,7 @@ const CabinetPage = () => {
                     <div className="container">
                         <div className="cabinet-grid">
                             {/* Catalog */}
-                            <div className="cabinet-card" onClick={() => setActiveSection('catalog')}>
+                            <div className="cabinet-card" onClick={() => navigate('/catalog')}>
                                 <div className="cabinet-card-icon"><ShoppingBag size={32} /></div>
                                 <h3>Каталог</h3>
                                 <p>Поиск и заказ лекарственных средств</p>
