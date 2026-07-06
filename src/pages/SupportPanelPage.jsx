@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import { adminAPI, chatAPI } from '../services/api';
+import { adminAPI } from '../services/api';
 import { canViewSupportTickets } from '../utils/roles';
 import {
     MessageSquare,

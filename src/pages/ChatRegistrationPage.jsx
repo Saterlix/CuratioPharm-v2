@@ -1,30 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { MessageSquare, Building, User, Mail, Phone, Send, Loader2, ArrowLeft, Lock, MapPin } from 'lucide-react';
 import { authAPI } from '../services/api';
-import { usePageStyle } from '../context/PageStyleContext';
+
 import Navbar from './Navbar';
 import './ChatRegistrationPage.css';
 
 const STORAGE_KEY = 'cp_reg_session';
 
-const normalizeMessage = (m) => ({
-    id: m.id || m.Id,
-    role: m.role || m.Role || (m.isFromAdmin ? 'admin' : 'user'),
-    content: m.content || m.Content || m.message || '',
-    timestamp: m.timestamp || m.Timestamp || m.createdAt || new Date().toISOString()
-});
-
-const formatTime = (ts) => {
-    if (!ts) return '';
-    try {
-        return new Date(ts).toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-    } catch { return ''; }
-};
-
 const ChatRegistrationPage = () => {
-    const navigate = useNavigate();
-    const { isNatureStyle } = usePageStyle();
+
     const [step, setStep] = useState('form'); // 'form' | 'success'
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');

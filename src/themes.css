@@ -433,6 +433,7 @@ body {
 .submit-claim-btn:hover {
     background: var(--primary) !important;
     transform: translateY(-1px) !important;
+    color: var(--text-on-primary) !important;
 }
 
 .btn-secondary,
@@ -445,6 +446,19 @@ body {
     background: var(--surface-panel-muted) !important;
     border: 1px solid var(--border) !important;
     color: var(--text-primary) !important;
+    font-weight: 600;
+}
+
+.btn-secondary:hover,
+.btn-cancel:hover,
+.back-button:hover,
+.back-to-cabinet:hover,
+.admin-back-btn:hover,
+.security-btn:hover,
+.clear-cart-btn:hover {
+    background: var(--surface-panel) !important;
+    border-color: var(--primary) !important;
+    color: var(--primary-dark) !important;
 }
 
 input,
