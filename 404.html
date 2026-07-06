@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CuratioPharm</title>
     <script>
-      // GitHub Pages SPA routing fix
-      // Redirects all 404s back to index.html with the path encoded
-      var segmentCount = 1; // number of path segments in the base path
+      // Single Page Apps for GitHub Pages — SPA Redirect
+      // https://github.com/rafgraph/spa-github-pages
+      // segmentCount = 1 for project pages (e.g. /CuratioPharm-v2/)
+      var segmentCount = 1;
       var l = window.location;
       l.replace(
         l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?p=/' +
+        l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?/' +
         l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
         (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
         l.hash
